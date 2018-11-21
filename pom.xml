@@ -3,7 +3,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.com.github.daggerok</groupId>
+  <groupId>com.github.daggerok</groupId>
   <version>0.0.1</version>
   <artifactId>kumuluzee-examples</artifactId>
   <packaging>pom</packaging>
@@ -18,7 +18,7 @@
   </properties>
 
   <modules>
-    <module>maven-main</module>
+    <module>maven-assembly</module>
   </modules>
 
   <build>

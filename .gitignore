@@ -13,3 +13,4 @@ Thumbs.db
 /public/
 ./leveldb-*
 gradle-main
+kumuluzee-maven-gradle

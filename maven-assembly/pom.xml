@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.daggerok</groupId>
+  <artifactId>maven-assembly</artifactId>
+  <version>0.0.1</version>
+  <packaging>jar</packaging>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.kumuluz.ee</groupId>
+        <artifactId>kumuluzee-bom</artifactId>
+        <version>3.0.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-servlet-jetty</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-websocket-jetty</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-cdi-weld</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-jax-rs-jersey</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-json-p-jsonp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-json-b-yasson</artifactId>
+    </dependency>
+    <!--<dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-bean-validation-hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.kumuluz.ee</groupId>
+      <artifactId>kumuluzee-jpa-eclipselink</artifactId>
+    </dependency>-->
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>8.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <defaultGoal>clean package</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <finalName>${project.artifactId}-${project.version}-all</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <!--<mainClass>com.kumuluz.ee.EeApplication</mainClass>-->
+              <mainClass>com.github.daggerok.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>assemble-jar-with-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
