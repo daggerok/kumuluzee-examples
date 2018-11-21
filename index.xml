@@ -4,19 +4,19 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>kumuluzee-examples (0.0.1)</title>
-<date>2018-11-21 00:36:05 UTC</date>
+<date>2018-11-21 23:31:18 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
 <surname>Kostromin</surname>
 </personname>
-<email>daggerok@gmail.com</email>
+<email>com.github.daggerok@gmail.com</email>
 </author>
 <authorinitials>MK</authorinitials>
 <revhistory>
 <revision>
 <revnumber>0.0.1</revnumber>
-<date>2018-11-21 00:36:05 UTC</date>
+<date>2018-11-21 23:31:18 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
@@ -41,10 +41,10 @@
 <title>Links</title>
 <itemizedlist>
 <listitem>
-<simpara><link xl:href="https://github.com/daggerok/kumuluzee-examples">GitHub repo</link></simpara>
+<simpara><link xl:href="https://github.com/com.github.daggerok/kumuluzee-examples">GitHub repo</link></simpara>
 </listitem>
 <listitem>
-<simpara><link xl:href="https://daggerok.github.io/kumuluzee-examples">GitHub pages</link></simpara>
+<simpara><link xl:href="https://com.github.daggerok.github.io/kumuluzee-examples">GitHub pages</link></simpara>
 </listitem>
 </itemizedlist>
 </chapter>
