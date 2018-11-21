@@ -4,7 +4,7 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>kumuluzee-examples (0.0.1)</title>
-<date>2018-11-21 00:31:25 UTC</date>
+<date>2018-11-21 00:36:05 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -16,23 +16,20 @@
 <revhistory>
 <revision>
 <revnumber>0.0.1</revnumber>
-<date>2018-11-21 00:31:25 UTC</date>
+<date>2018-11-21 00:36:05 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
 </info>
 <chapter xml:id="introduction">
 <title>Introduction</title>
+<simpara>Read <link xl:href="https://daggerok.github.io/kumuluzee-examples">project reference documentation</link></simpara>
 <formalpara>
 <title>docker / docker-compose</title>
 <para>
 <programlisting language="bash" linenumbering="unnumbered">./mvnw
-./mvnw package docker-compose:up -P docker
-./mvnw docker-compose:down -P docker
 
-./gradlew
-./gradlew composeUp
-./gradlew composeDown</programlisting>
+./gradlew docum -Dorg.gradle.jvmargs='-Xmx1g'</programlisting>
 </para>
 </formalpara>
 </chapter>
