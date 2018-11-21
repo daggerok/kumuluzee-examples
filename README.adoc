@@ -1,25 +1,15 @@
 = kumuluzee-examples image:https://travis-ci.org/daggerok/kumuluzee-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/kumuluzee-examples"]
 
-////
-image:https://travis-ci.org/daggerok/kumuluzee-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/kumuluzee-examples"]
-image:https://gitlab.com/daggerok/kumuluzee-examples/badges/master/build.svg["Build Status", link="https://gitlab.com/daggerok/kumuluzee-examples/-/jobs"]
-image:https://img.shields.io/bitbucket/pipelines/daggerok/kumuluzee-examples.svg["Build Status", link="https://bitbucket.com/daggerok/kumuluzee-examples"]
-////
-
 //tag::content[]
 
-//Read link:https://daggerok.github.io/kumuluzee-examples[project reference documentation]
+Read link:https://daggerok.github.io/kumuluzee-examples[project reference documentation]
 
 .docker / docker-compose
 [source,bash]
 ----
 ./mvnw
-./mvnw package docker-compose:up -P docker
-./mvnw docker-compose:down -P docker
 
-./gradlew
-./gradlew composeUp
-./gradlew composeDown
+./gradlew docum -Dorg.gradle.jvmargs='-Xmx1g'
 ----
 
 //end::content[]
