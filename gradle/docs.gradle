@@ -29,9 +29,9 @@ asciidoctor {
     'source-highlighter': 'highlightjs',
     'root-project-name': rootProject.name,
     'build-gradle': project.file('build.gradle'),
-    'github-url': "https://github.com/daggerok/$rootProject.name",
-    'gitlab-url': "https://gitlab.com/daggerok/$rootProject.name",
-    'bitbucket-url': "https://bitbucket.com/daggerok/$rootProject.name"
+    'github-url': "https://github.com/com.github.daggerok/$rootProject.name",
+    'gitlab-url': "https://gitlab.com/com.github.daggerok/$rootProject.name",
+    'bitbucket-url': "https://bitbucket.com/com.github.daggerok/$rootProject.name"
 
   logDocuments = true
   //backends 'pdf', 'html5'
@@ -55,8 +55,8 @@ task documentation(type: Copy, dependsOn: asciidoctor) {
 }
 
 gitPublish {
-  // repoUri = "git@gitlab.com:daggerok/${rootProject.name}.git" // same gitlab plugin?
-  repoUri = "git@github.com:daggerok/${rootProject.name}.git" as String
+  // repoUri = "git@gitlab.com:com.github.daggerok/${rootProject.name}.git" // same gitlab plugin?
+  repoUri = "git@github.com:com.github.daggerok/${rootProject.name}.git" as String
   branch = 'gh-pages'
 
   contents {

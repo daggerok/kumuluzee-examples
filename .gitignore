@@ -12,3 +12,4 @@ out
 Thumbs.db
 /public/
 ./leveldb-*
+gradle-main

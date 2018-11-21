@@ -37,7 +37,7 @@ before_install:
 #
 - sudo pip install docker-compose httpie >/dev/null 2>&1
 #
-- source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+- source <(curl -s https://raw.githubusercontent.com/com.github.daggerok/bash-functions/master/main.bash)
 - stop_any 8080 3000 80 >/dev/null
 
 script:
