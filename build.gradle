@@ -1,0 +1,25 @@
+buildscript {
+  dependencies {
+    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16'
+    classpath 'org.jruby:jruby-complete:9.1.13.0'
+  }
+}
+
+plugins {
+  id 'idea'
+  id 'eclipse'
+  id 'org.asciidoctor.convert' version '1.5.8.1'
+  id 'org.ajoberstar.git-publish' version '2.0.0'
+}
+
+wrapper {
+  gradleVersion = '5.0-rc-4'
+  distributionType = 'BIN'
+}
+
+apply from: "$projectDir/gradle/repositories.gradle"
+apply from: "$projectDir/gradle/docs.gradle"
+
+apply plugin: 'base'
+group 'com.github.daggerok'
+version '0.0.1'

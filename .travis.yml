@@ -1,0 +1,76 @@
+notifications:
+  email: false
+
+env:
+  global:
+  - TERM=dumb
+  - secure: CPxhCfH647r50BaP+wecOlDyScz/VqjtI+j34A6YePvkhZ3K2xbWugBzrs2jEhxZV5Xdutd2feRNA5UCMndi0LqGZ/cr9B0YSp8XhlQzNSCwvD7H33DJMj1qRue2QcWVKFUAn4V5BHVBs11UE1kohxDEZ4jzcNCtjRICX5oNbSWDpwBO5iUTBHNp5lflzWbzN9tJHpA+GnHiKWQHHaDjBjFw7IKG5vV6QrGM/c+MN2iyOIJ7k1557E0txm+xmJxRxoC68/XGeodZxwdhcZBuLkJ+SO+FGj5Dx9aKp6S28ZkhH2VVWseA1SjwltTzGqK22HkGqOeMhzbadNsbh+cyPuHz4N2EUxtUJs1oay3apIxvrucQISS5F3oEjbn+ZZ/8NKS6IXKAm2femzxH7XglwpKZjGkA+8kuii/rC4bKnVo/cdrp0obkz0Nwtp11cMlX1yNi/pV12+8iI8/RF3/VnyHvpr9/jBhC+l6YurSAy5wLrD9UQwGjyeXFDb5+mPMyuYLJ6IsurkLZNkpRNjkiMOc0rDynfe/3U0tQpr/+x/AC5YweAAErH6KuJb1Lgh2fsfrJXf7MJNczv/uvG0Kj777XD1kIzyII5boelonEqZjrrgeK/msrwLPbWvNcv6gCziaQniIEpTbrR/R7FQe0IDyXSVBM4ENh9dHdNLWkA8A=
+
+language: java
+jdk: oraclejdk8
+
+service:
+- docker
+
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+    - libappindicator1
+    - fonts-liberation
+    - bash
+    - curl
+    - libxml2-utils
+    - docker-ce
+
+install: true
+before_install:
+- export CHROME_BIN=/usr/bin/google-chrome
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+#
+- sudo apt-get update -yqq >/dev/null
+- sudo apt-get install -yqq --no-install-suggests --no-install-recommends
+  tree jq python-pip curl bash sudo >/dev/null
+#
+- sudo pip install docker-compose httpie >/dev/null 2>&1
+#
+- source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+- stop_any 8080 3000 80 >/dev/null
+
+script:
+- export root=$(pwd)
+- ./mvnw
+- ./gradlew -Dorg.gradle.jvmargs='-Xmx1g'
+
+before_deploy:
+- cd ${root}
+- ./gradlew documentation -Dorg.gradle.jvmargs='-Xmx1g'
+- ./gradlew clean -Dorg.gradle.jvmargs='-Xmx1g'
+- ./mvnw -Pdocs
+- mkdir -p ./target/generated-docs
+- cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  # travis encrypt GITHUB_TOKEN=<your github repo token> --add
+  github-token: "$GITHUB_TOKEN"
+  keep-history: true
+  on:
+    branch: master
+  local-dir: target/generated-docs
+  target_branch: gh-pages
+
+before_cache:
+- for item in $(find ~/.gradle -name "*.lock");
+    do sudo rm -rf $item ;
+  done
+
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle
+  - $HOME/.docker
