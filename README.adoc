@@ -4,13 +4,23 @@
 
 Read link:https://daggerok.github.io/kumuluzee-examples[project reference documentation]
 
-.docker / docker-compose
+.build
 [source,bash]
 ----
 ./mvnw
-
-./gradlew docum -Dorg.gradle.jvmargs='-Xmx1g'
 ----
+
+.docs
+[source,bash]
+----
+./gradlew documentation -Dorg.gradle.jvmargs='-Xmx1g'
+----
+
+TODO (Gradle):
+
+- link:https://github.com/kumuluz/kumuluzee-samples/issues/14[KumuluzEE with Gradle 1]
+- link:https://gist.github.com/ArtificialPB/fa629f321fd3f9d74cc77078da4b4bab[KumuluzEE with Gradle 2]
+- link:https://github.com/ArtificialPB/kumuluzee-jax-rs-gradle[KumuluzEE with Gradle 3]
 
 //end::content[]
 
