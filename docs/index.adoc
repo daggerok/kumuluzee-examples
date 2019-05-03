@@ -22,32 +22,21 @@ Maksim Kostromin <com.github.daggerok@gmail.com>
 :example-caption!:
 :source-highlighter: highlightjs
 
-////
-Travis CI status:
-image:https://travis-ci.org/com.github.daggerok/{root-project-name}.svg?branch=master["Build Status", link={github-url}]
-
-GitLab CI status:
-image:https://gitlab.com/com.github.daggerok/{root-project-name}/badges/master/build.svg["Build Status", link={gitlab-url}]
-
-BitBucket CI status:
-image:https://img.shields.io/bitbucket/pipelines/com.github.daggerok/{root-project-name}.svg["Build Status", link={bitbucket-url}]
-////
-
 == Introduction
 
 include::../README.adoc[tags=content]
 
 == Implementation
 
-TODO: implement documentation...
+=== KumuluzEE using Gradle (Kotlin DSL)
+
+[source,kotlin]
+----
+include::../gradle-kotlin-dsl/build.gradle.kts[tags=content]
+----
 
 == Links
 
 ifdef::backend-html5[- link:./index.pdf[Documentation in PFD format]]
 - link:{github-url}[GitHub repo]
 - link:https://com.github.daggerok.github.io/{root-project-name}[GitHub pages]
-////
-- link:{gitlab-url}[GitLab repo]
-- link:https://com.github.daggerok.gitlab.io/{root-project-name}[GitLab pages]
-- link:{bitbucket-url}[BitBucket repo]
-////

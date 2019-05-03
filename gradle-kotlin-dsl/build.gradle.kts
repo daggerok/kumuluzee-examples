@@ -20,12 +20,12 @@ java {
 repositories {
   mavenCentral()
 }
-
+//tag::content[]
 val kumuluzeeLoader by configurations.creating {
   extendsFrom(configurations["runtime"])
   setTransitive(false)
 }
-
+//end::content[]
 val kumuluzeeVersion: String by project
 val arquillianVersion: String by project
 dependencyManagement {
@@ -34,15 +34,17 @@ dependencyManagement {
     mavenBom("org.jboss.arquillian:arquillian-bom:$arquillianVersion")
   }
 }
-
+//tag::content[]
 dependencies {
+  //end::content[]
   val kumuluzeeLogsVersion: String by project
   val kumuluzeeRestVersion: String by project
   val kumuluzeeCorsVersion: String by project
   val junitVersion: String by project
   val kumuluzeeArquillianContainerVersion: String by project
-
+  //tag::content[]
   kumuluzeeLoader("com.kumuluz.ee:kumuluzee-loader:$kumuluzeeVersion")
+  //end::content[]
 
   implementation("com.kumuluz.ee:kumuluzee-microProfile-2.1")
   implementation("com.kumuluz.ee.logs:kumuluzee-logs-jul:$kumuluzeeLogsVersion")
@@ -52,13 +54,16 @@ dependencies {
   testImplementation("com.kumuluz.ee.testing:kumuluzee-arquillian-container:$kumuluzeeArquillianContainerVersion")
   testImplementation("org.jboss.arquillian.junit:arquillian-junit-container")
   testImplementation("junit:junit:$junitVersion")
+  //tag::content[]
+  // ...
 }
 
 tasks {
+  //end::content[]
   test {
     useJUnitPlatform()
   }
-
+  //tag::content[]
   register("kumuluzLoader", Copy::class.java) {
     group = "KumuluzEE"
     description = "Repackage KumuluzEE loader"
@@ -97,3 +102,4 @@ tasks {
 }
 
 defaultTasks("kumuluzJar")
+//end::content[]
