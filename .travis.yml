@@ -1,17 +1,13 @@
 notifications:
   email: false
-
 env:
   global:
   - TERM=dumb
   - secure: CPxhCfH647r50BaP+wecOlDyScz/VqjtI+j34A6YePvkhZ3K2xbWugBzrs2jEhxZV5Xdutd2feRNA5UCMndi0LqGZ/cr9B0YSp8XhlQzNSCwvD7H33DJMj1qRue2QcWVKFUAn4V5BHVBs11UE1kohxDEZ4jzcNCtjRICX5oNbSWDpwBO5iUTBHNp5lflzWbzN9tJHpA+GnHiKWQHHaDjBjFw7IKG5vV6QrGM/c+MN2iyOIJ7k1557E0txm+xmJxRxoC68/XGeodZxwdhcZBuLkJ+SO+FGj5Dx9aKp6S28ZkhH2VVWseA1SjwltTzGqK22HkGqOeMhzbadNsbh+cyPuHz4N2EUxtUJs1oay3apIxvrucQISS5F3oEjbn+ZZ/8NKS6IXKAm2femzxH7XglwpKZjGkA+8kuii/rC4bKnVo/cdrp0obkz0Nwtp11cMlX1yNi/pV12+8iI8/RF3/VnyHvpr9/jBhC+l6YurSAy5wLrD9UQwGjyeXFDb5+mPMyuYLJ6IsurkLZNkpRNjkiMOc0rDynfe/3U0tQpr/+x/AC5YweAAErH6KuJb1Lgh2fsfrJXf7MJNczv/uvG0Kj777XD1kIzyII5boelonEqZjrrgeK/msrwLPbWvNcv6gCziaQniIEpTbrR/R7FQe0IDyXSVBM4ENh9dHdNLWkA8A=
-
 language: java
 jdk: oraclejdk8
-
 service:
 - docker
-
 addons:
   apt:
     sources:
@@ -22,9 +18,9 @@ addons:
     - fonts-liberation
     - bash
     - curl
+    - jq
     - libxml2-utils
     - docker-ce
-
 install: true
 before_install:
 - export CHROME_BIN=/usr/bin/google-chrome
@@ -52,7 +48,15 @@ script:
 - http :8080
 - http :8080/404 || true
 - stop_any 80 8080
-
+#
+- cd ${root}/gradle-kotlin-dsl
+- ./gradlew
+- java -jar build/libs/*-all.jar &
+- wait_for 8080
+- sleep 3
+- http :8080/api/v1/hello | jq '.'
+- http :8080/api/v1/hello/404 | jq '.'
+- stop_any 80 8080
 before_deploy:
 - cd ${root}
 - ./gradlew documentation -Dorg.gradle.jvmargs='-Xmx1g'
@@ -60,7 +64,6 @@ before_deploy:
 - ./mvnw -Pdocs
 - mkdir -p ./target/generated-docs
 - cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
-
 deploy:
   provider: pages
   skip-cleanup: true
@@ -71,12 +74,10 @@ deploy:
     branch: master
   local-dir: target/generated-docs
   target_branch: gh-pages
-
 before_cache:
 - for item in $(find ~/.gradle -name "*.lock");
     do sudo rm -rf $item ;
   done
-
 cache:
   directories:
   - $HOME/.m2
