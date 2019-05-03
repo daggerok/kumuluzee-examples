@@ -1,3 +1,5 @@
+import java.nio.charset.StandardCharsets
+
 plugins {
   idea
   java
@@ -66,38 +68,48 @@ tasks {
   //tag::content[]
   register("kumuluzLoader", Copy::class.java) {
     group = "KumuluzEE"
-    description = "Repackage KumuluzEE loader"
-    from(zipTree(configurations["kumuluzeeLoader"].singleFile).matching { include("**/*.class") })
+    description = "Add KumuluzEE boot loader"
+
+    from(zipTree(configurations["kumuluzeeLoader"].singleFile).matching {
+      include("**/*.class")
+      include("**/*.properties")
+    })
     into("$buildDir/classes/java/main")
     outputs.upToDateWhen { false }
-  }
 
-  register("kumuluzProperties") {
-    group = "KumuluzEE"
-    description = "Add KumuluzEE boot-loader.properties file"
-    file("$buildDir/classes/java/main/META-INF/kumuluzee").mkdirs()
-    file("$buildDir/classes/java/main/META-INF/kumuluzee/boot-loader.properties")
-        .writeText("main-class=com.kumuluz.ee.EeApplication")
+    doLast {
+      val filename = "$buildDir/classes/java/main/META-INF/kumuluzee"
+      file(filename).mkdirs()
+      file("$filename/boot-loader.properties")
+          .writeText("main-class=com.kumuluz.ee.EeApplication\n", StandardCharsets.UTF_8)
+    }
   }
 
   register("kumuluzJar", Jar::class.java) {
     group = "KumuluzEE"
     description = "Build KumuluzEE uber (fat) jar"
+
     archiveClassifier.set("all")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
       attributes("Main-Class" to "com.kumuluz.ee.loader.EeBootLoader")
     }
-    into("lib") {
-      from(configurations.runtimeClasspath.get()
-          .onEach { println("add dependency: ${it.name}") })
+
+    // deps
+    val libs = configurations.runtimeClasspath
+    libs.get().forEach { println("add dependency: ${it.name}") }
+    from(libs.get()) {
+      into("lib")
     }
-    val sourcesMain = sourceSets.main.get()
-    sourcesMain.allSource.forEach { println("add app: ${it.name}") }
-    from(sourcesMain.output)
-    shouldRunAfter("kumuluzLoader", "kumuluzProperties")
-    dependsOn("kumuluzLoader", "kumuluzProperties")
-    finalizedBy("build")
+
+    // app
+    val sourcesMain = sourceSets.main
+    sourcesMain.get().allSource.forEach { println("add app: ${it.name}") }
+    from(sourcesMain.get().output)
+
+    shouldRunAfter("kumuluzLoader")
+    dependsOn("kumuluzLoader")
   }
 }
 

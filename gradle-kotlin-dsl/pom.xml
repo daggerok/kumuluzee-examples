@@ -86,6 +86,7 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>com.kumuluz.ee</groupId>
