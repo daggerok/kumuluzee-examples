@@ -468,7 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:com.github.daggerok@gmail.com">com.github.daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2019-05-04 00:37:59 UTC</span>
+<span id="revdate">2019-05-04 00:41:19 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -542,19 +542,14 @@ tasks {
     description = "Repackage KumuluzEE loader"
     from(zipTree(configurations["kumuluzeeLoader"].singleFile).matching { include("**/*.class") })
     into("$buildDir/classes/java/main")
-    //outputs.upToDateWhen { false }
-    shouldRunAfter("classes")
-  }
+    outputs.upToDateWhen { false }
 
-  register("kumuluzProperties") {
-    group = "KumuluzEE"
-    description = "Add KumuluzEE boot-loader.properties file"
     val parent = "$buildDir/classes/java/main/META-INF/kumuluzee"
     file(parent).mkdirs()
     file("$parent/boot-loader.properties")
         .writeText("main-class=com.kumuluz.ee.EeApplication\n", UTF_8)
-      //.appendText("\n", UTF_8)
-    shouldRunAfter("classes", "kumuluzLoader")
+
+    shouldRunAfter("classes")
   }
 
   register("kumuluzJar", Jar::class.java) {
@@ -581,8 +576,8 @@ tasks {
     from(sourcesMain.get().output)
     //from(configurations["kumuluzeeLoader"])
 
-    shouldRunAfter("kumuluzLoader", "kumuluzProperties")
-    dependsOn("kumuluzLoader", "kumuluzProperties")
+    shouldRunAfter("kumuluzLoader")
+    dependsOn("kumuluzLoader")
     finalizedBy("build")
   }
 }
@@ -615,7 +610,7 @@ defaultTasks("kumuluzJar")</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2019-05-04 00:37:59 UTC
+Last updated 2019-05-04 00:41:19 UTC
 </div>
 </div>
 <!-- jquery -->
