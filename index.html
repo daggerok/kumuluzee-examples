@@ -468,7 +468,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:com.github.daggerok@gmail.com">com.github.daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2019-05-04 00:57:34 UTC</span>
+<span id="revdate">2019-05-04 01:15:04 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -548,11 +548,11 @@ tasks {
     into("$buildDir/classes/java/main")
     outputs.upToDateWhen { false }
 
-    doFirst {
-      val parent = "$buildDir/classes/java/main/META-INF/kumuluzee"
-      file(parent).mkdirs()
+    doLast {
+      val parent = file("$buildDir/classes/java/main/META-INF/kumuluzee")
+      parent.mkdirs()
       file("$parent/boot-loader.properties")
-          .writeText("main-class=com.kumuluz.ee.EeApplication\n", UTF_8)
+          .writeText("main-class=com.kumuluz.ee.EeApplication\n", StandardCharsets.UTF_8)
     }
 
     shouldRunAfter("classes")
@@ -617,7 +617,7 @@ defaultTasks("kumuluzJar")</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2019-05-04 00:57:34 UTC
+Last updated 2019-05-04 01:15:04 UTC
 </div>
 </div>
 <!-- jquery -->
