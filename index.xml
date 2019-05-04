@@ -4,7 +4,7 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>kumuluzee-examples (0.0.1)</title>
-<date>2019-05-04 00:34:12 UTC</date>
+<date>2019-05-04 00:37:59 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -16,7 +16,7 @@
 <revhistory>
 <revision>
 <revnumber>0.0.1</revnumber>
-<date>2019-05-04 00:34:12 UTC</date>
+<date>2019-05-04 00:37:59 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
@@ -69,6 +69,7 @@ tasks {
     from(zipTree(configurations["kumuluzeeLoader"].singleFile).matching { include("**/*.class") })
     into("$buildDir/classes/java/main")
     //outputs.upToDateWhen { false }
+    shouldRunAfter("classes")
   }
 
   register("kumuluzProperties") {
@@ -79,6 +80,7 @@ tasks {
     file("$parent/boot-loader.properties")
         .writeText("main-class=com.kumuluz.ee.EeApplication\n", UTF_8)
       //.appendText("\n", UTF_8)
+    shouldRunAfter("classes", "kumuluzLoader")
   }
 
   register("kumuluzJar", Jar::class.java) {
