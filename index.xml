@@ -4,7 +4,7 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>kumuluzee-examples (0.0.1)</title>
-<date>2019-05-02 03:57:33 UTC</date>
+<date>2019-05-04 00:34:12 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -16,7 +16,7 @@
 <revhistory>
 <revision>
 <revnumber>0.0.1</revnumber>
-<date>2019-05-02 03:57:33 UTC</date>
+<date>2019-05-04 00:34:12 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
@@ -51,7 +51,68 @@
 </chapter>
 <chapter xml:id="implementation">
 <title>Implementation</title>
-<simpara>TODO: implement documentation&#8230;&#8203;</simpara>
+<section xml:id="kumuluzee-using-gradle-kotlin-dsl">
+<title>KumuluzEE using Gradle (Kotlin DSL)</title>
+<programlisting language="kotlin" linenumbering="unnumbered">val kumuluzeeLoader by configurations.creating {
+  extendsFrom(configurations["runtime"])
+  setTransitive(false)
+}
+dependencies {
+  kumuluzeeLoader("com.kumuluz.ee:kumuluzee-loader:$kumuluzeeVersion")
+  // ...
+}
+
+tasks {
+  register("kumuluzLoader", Copy::class.java) {
+    group = "KumuluzEE"
+    description = "Repackage KumuluzEE loader"
+    from(zipTree(configurations["kumuluzeeLoader"].singleFile).matching { include("**/*.class") })
+    into("$buildDir/classes/java/main")
+    //outputs.upToDateWhen { false }
+  }
+
+  register("kumuluzProperties") {
+    group = "KumuluzEE"
+    description = "Add KumuluzEE boot-loader.properties file"
+    val parent = "$buildDir/classes/java/main/META-INF/kumuluzee"
+    file(parent).mkdirs()
+    file("$parent/boot-loader.properties")
+        .writeText("main-class=com.kumuluz.ee.EeApplication\n", UTF_8)
+      //.appendText("\n", UTF_8)
+  }
+
+  register("kumuluzJar", Jar::class.java) {
+    group = "KumuluzEE"
+    description = "Build KumuluzEE uber (fat) jar"
+
+    archiveClassifier.set("all")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+      attributes("Main-Class" to "com.kumuluz.ee.loader.EeBootLoader")
+    }
+
+    // deps
+    val libs = configurations.runtimeClasspath
+    //libs.get().forEach { println("add dependency: ${it.name}") }
+    from(libs.get()) {
+      into("lib")
+    }
+
+    // app
+    val sourcesMain = sourceSets.main
+    //sourcesMain.get().allSource.forEach { println("add app: ${it.name}") }
+    from(sourcesMain.get().output)
+    //from(configurations["kumuluzeeLoader"])
+
+    shouldRunAfter("kumuluzLoader", "kumuluzProperties")
+    dependsOn("kumuluzLoader", "kumuluzProperties")
+    finalizedBy("build")
+  }
+}
+
+defaultTasks("kumuluzJar")</programlisting>
+</section>
 </chapter>
 <chapter xml:id="links">
 <title>Links</title>
