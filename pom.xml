@@ -67,7 +67,7 @@
             <project-name>${project.artifactId}</project-name>
             <root-project-name>${project.artifactId}</root-project-name>
             <project-version>${project.version}</project-version>
-            <github-url>https://github.com/${project.artifactId}</github-url>
+            <github-url>https://github.com/daggerok/${project.artifactId}</github-url>
           </attributes>
         </configuration>
         <executions>
