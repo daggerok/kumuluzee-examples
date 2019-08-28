@@ -1,5 +1,8 @@
 notifications:
   email: false
+git:
+  quiet: true
+  depth: 2
 
 env:
   global:
@@ -131,8 +134,8 @@ before_cache:
   done
 
 cache:
-  packages: true
   pip: true
+  packages: true
   directories:
   - $HOME/.m2
   - $HOME/.gradle

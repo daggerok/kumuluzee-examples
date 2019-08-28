@@ -12,6 +12,8 @@ repositories {
 }
 
 tasks.withType(Wrapper::class.java) {
+  val gradleWrapperVersion: String by project
+  gradleVersion = gradleWrapperVersion
   distributionType = Wrapper.DistributionType.BIN
 }
 
