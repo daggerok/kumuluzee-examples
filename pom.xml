@@ -16,9 +16,10 @@
     <encoding>UTF-8</encoding>
     <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
     <project.reporting.sourceEncoding>${encoding}</project.reporting.sourceEncoding>
-    <asciidoctor-maven-plugin.version>1.5.7.1</asciidoctor-maven-plugin.version>
-    <asciidoctorj-pdf.version>1.5.0-alpha.16</asciidoctorj-pdf.version>
-    <asciidoctorj-diagram.version>1.5.10</asciidoctorj-diagram.version>
+
+    <asciidoctorj-pdf.version>1.5.0-beta.2</asciidoctorj-pdf.version>
+    <asciidoctorj-diagram.version>1.5.18</asciidoctorj-diagram.version>
+    <asciidoctor-maven-plugin.version>2.0.0-RC.1</asciidoctor-maven-plugin.version>
   </properties>
 
   <modules>
