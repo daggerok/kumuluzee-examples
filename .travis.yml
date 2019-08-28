@@ -40,7 +40,7 @@ jobs:
   include:
   - stage: test
     jdk: openjdk8
-    name: gradle-kotlin-dsl jdk8
+    name: gradle gradle-kotlin-dsl jdk8
     script:
     - cd ${root}/gradle-kotlin-dsl
     # gradle
@@ -55,8 +55,9 @@ jobs:
 
   - stage: test
     jdk: openjdk8
-    name: maven jdk8
+    name: maven gradle-kotlin-dsl jdk8
     script:
+    - cd ${root}/gradle-kotlin-dsl
     - ./mvnw
     - java -jar target/*.jar &
     - wait_for 8080
@@ -92,7 +93,8 @@ jobs:
     script:
     - cd ${root}
     - ./mvnw versions:display-property-updates
-    - ./mvnw versions:display-property-updates -f maven-assembly/pom.xml
+    - ./mvnw versions:display-property-updates -f ./maven-assembly/pom.xml
+    - ./mvnw versions:display-property-updates -f ./gradle-kotlin-dsl/pom.xml
 
   - stage: deploy
     jdk: openjdk8
