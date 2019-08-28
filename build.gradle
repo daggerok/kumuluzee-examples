@@ -1,15 +1,15 @@
 buildscript {
   dependencies {
-    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16'
-    classpath 'org.jruby:jruby-complete:9.1.13.0'
+    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16' // freeze!
+    classpath 'org.jruby:jruby-complete:9.1.13.0' // freeze!
   }
 }
 
 plugins {
   id 'idea'
   id 'eclipse'
-  id 'org.asciidoctor.convert' version '1.5.8.1'
-  id 'org.ajoberstar.git-publish' version '2.0.0'
+  id 'org.asciidoctor.convert' version '1.5.8.1' // freeze!
+  id 'org.ajoberstar.git-publish' version '2.1.1'
   id 'com.github.ben-manes.versions' version '0.22.0'
 }
 
