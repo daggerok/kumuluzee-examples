@@ -18,9 +18,14 @@ Read link:https://daggerok.github.io/kumuluzee-examples[project reference docume
 
 TODO (Gradle):
 
-- link:https://github.com/kumuluz/kumuluzee-samples/issues/14[KumuluzEE with Gradle 1]
-- link:https://gist.github.com/ArtificialPB/fa629f321fd3f9d74cc77078da4b4bab[KumuluzEE with Gradle 2]
-- link:https://github.com/ArtificialPB/kumuluzee-jax-rs-gradle[KumuluzEE with Gradle 3]
+* link:https://github.com/kumuluz/kumuluzee-samples/issues/14[KumuluzEE with Gradle 1]
+* link:https://gist.github.com/ArtificialPB/fa629f321fd3f9d74cc77078da4b4bab[KumuluzEE with Gradle 2]
+* link:https://github.com/ArtificialPB/kumuluzee-jax-rs-gradle[KumuluzEE with Gradle 3]
+
+links:
+
+- link:https://github.com/kumuluz/kumuluzee-samples[KumuluzEE Samples (GitHub: kumuluz/kumuluzee-samples)]
+- link:https://ee.kumuluz.com/tutorials[KumuluzEE Tutorials]]
 
 //end::content[]
 
