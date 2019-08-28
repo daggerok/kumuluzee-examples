@@ -25,7 +25,10 @@ addons:
 
 install: true
 before_install:
+- sudo pip -V
 - sudo pip install --upgrade pip httpie >/dev/null 2>&1
+- sudo pip -V
+- http --version
 #
 - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 - stop_any 8080 3000 80 >/dev/null
