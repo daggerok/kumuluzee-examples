@@ -3,7 +3,8 @@ import java.nio.charset.StandardCharsets
 plugins {
   idea
   java
-  id("io.spring.dependency-management") version "1.0.7.RELEASE"
+  id("com.github.ben-manes.versions") version "0.22.0"
+  id("io.spring.dependency-management") version "1.0.8.RELEASE"
 }
 
 repositories {

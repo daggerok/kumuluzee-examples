@@ -1,84 +1,133 @@
 notifications:
   email: false
+
 env:
   global:
   - TERM=dumb
   - secure: CPxhCfH647r50BaP+wecOlDyScz/VqjtI+j34A6YePvkhZ3K2xbWugBzrs2jEhxZV5Xdutd2feRNA5UCMndi0LqGZ/cr9B0YSp8XhlQzNSCwvD7H33DJMj1qRue2QcWVKFUAn4V5BHVBs11UE1kohxDEZ4jzcNCtjRICX5oNbSWDpwBO5iUTBHNp5lflzWbzN9tJHpA+GnHiKWQHHaDjBjFw7IKG5vV6QrGM/c+MN2iyOIJ7k1557E0txm+xmJxRxoC68/XGeodZxwdhcZBuLkJ+SO+FGj5Dx9aKp6S28ZkhH2VVWseA1SjwltTzGqK22HkGqOeMhzbadNsbh+cyPuHz4N2EUxtUJs1oay3apIxvrucQISS5F3oEjbn+ZZ/8NKS6IXKAm2femzxH7XglwpKZjGkA+8kuii/rC4bKnVo/cdrp0obkz0Nwtp11cMlX1yNi/pV12+8iI8/RF3/VnyHvpr9/jBhC+l6YurSAy5wLrD9UQwGjyeXFDb5+mPMyuYLJ6IsurkLZNkpRNjkiMOc0rDynfe/3U0tQpr/+x/AC5YweAAErH6KuJb1Lgh2fsfrJXf7MJNczv/uvG0Kj777XD1kIzyII5boelonEqZjrrgeK/msrwLPbWvNcv6gCziaQniIEpTbrR/R7FQe0IDyXSVBM4ENh9dHdNLWkA8A=
+
 language: java
-jdk: openjdk8
+
 addons:
   apt:
+    update: true
     packages:
-    - bash
-    - curl
     - jq
     - tree
+    - curl
+    - bash
+    - sudo
+    - python-pip
     - libxml2-utils
+
 install: true
 before_install:
-- sudo apt-get update -yqq >/dev/null
-- sudo apt-get install -yqq --no-install-suggests --no-install-recommends
-  tree jq python-pip curl bash sudo >/dev/null
-#
 - sudo pip install --upgrade pip httpie >/dev/null 2>&1
 #
 - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 - stop_any 8080 3000 80 >/dev/null
-
-script:
+#
 - export root=$(pwd)
 - ./mvnw
 - ./gradlew -Dorg.gradle.jvmargs='-Xmx1g'
 - ./gradlew --stop
-#
-- cd ${root}/gradle-kotlin-dsl
-# gradle
-- ./gradlew --no-daemon
-- java -jar build/libs/*-all.jar &
-- wait_for 8080
-- sleep 5
-- curl http://localhost:8080/api/v1/hello/ | jq '.'
-- curl http://localhost:8080/api/v1/hello/404 | jq '.'
-- ./gradlew --stop
-- stop_any 80 8080
-# maven
-- ./mvnw
-- java -jar target/*.jar &
-- wait_for 8080
-- sleep 5
-- curl http://localhost:8080/api/v1/hello/ | jq '.'
-- curl http://localhost:8080/api/v1/hello/404 | jq '.'
-- stop_any 80 8080
-#
-- cd ${root}
-- ./mvnw -pl maven-assembly
-- java -jar maven-assembly/target/maven-assembly-*.jar &
-- wait_for 8080
-- sleep 3
-- http :8080 | jq '.'
-- http :8080/404 || true
-- stop_any 80 8080
-before_deploy:
-- cd ${root}
-- ./gradlew documentation -Dorg.gradle.jvmargs='-Xmx1g'
-- ./gradlew clean -Dorg.gradle.jvmargs='-Xmx1g'
-- ./mvnw -Pdocs
-- mkdir -p ./target/generated-docs
-- cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
-deploy:
-  provider: pages
-  skip-cleanup: true
-  # travis encrypt GITHUB_TOKEN=<your github repo token> --add
-  github-token: "$GITHUB_TOKEN"
-  keep-history: true
-  on:
-    branch: master
-  local-dir: target/generated-docs
-  target_branch: gh-pages
+
+stages:
+- test
+- deploy
+
+jobs:
+  include:
+  - stage: test
+    jdk: openjdk8
+    name: gradle-kotlin-dsl jdk8
+    script:
+    - cd ${root}/gradle-kotlin-dsl
+    # gradle
+    - ./gradlew --no-daemon
+    - java -jar build/libs/*-all.jar &
+    - wait_for 8080
+    - sleep 5
+    - curl http://localhost:8080/api/v1/hello/ | jq '.'
+    - curl http://localhost:8080/api/v1/hello/404 | jq '.'
+    - ./gradlew --stop
+    - stop_any 80 8080
+
+  - stage: test
+    jdk: openjdk8
+    name: maven jdk8
+    script:
+    - ./mvnw
+    - java -jar target/*.jar &
+    - wait_for 8080
+    - sleep 5
+    - curl http://localhost:8080/api/v1/hello/ | jq '.'
+    - curl http://localhost:8080/api/v1/hello/404 | jq '.'
+    - stop_any 80 8080
+
+  - stage: test
+    jdk: openjdk8
+    name: maven-assembly jdk8
+    script:
+    - cd ${root}
+    - ./mvnw -pl maven-assembly
+    - java -jar maven-assembly/target/maven-assembly-*.jar &
+    - wait_for 8080
+    - sleep 3
+    - http :8080 | jq '.'
+    - http :8080/404 || true
+    - stop_any 80 8080
+
+  - stage: test
+    jdk: openjdk8
+    name: gradle updates jdk8
+    script:
+    - cd ${root}
+    - ./gradlew dependencyUpdates -Drevision=release
+    - ./gradlew dependencyUpdates -Drevision=release -b gradle-kotlin-dsl/build.gradle.kts
+
+  - stage: test
+    jdk: openjdk8
+    name: maven updates jdk8
+    script:
+    - cd ${root}
+    - ./mvnw versions:display-property-updates
+    - ./mvnw versions:display-property-updates -f maven-assembly/pom.xml
+
+  - stage: deploy
+    jdk: openjdk8
+    name: GitHub release and GitHub pages deployment jdk8
+    script: skip
+    if: branch = "master" AND type NOT IN (pull_request)
+    before_deploy:
+    - if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ ".$TRAVIS_BRANCH" != ".master" ] ; then exit 0 ; fi
+    - env
+    # publish tag release
+    - mkdir -p ${HOME}/.m2
+    - set -e
+    - cd ${root}
+    - ./gradlew documentation -Dorg.gradle.jvmargs='-Xmx1g'
+    - ./gradlew clean -Dorg.gradle.jvmargs='-Xmx1g'
+    - ./mvnw -Pdocs
+    - mkdir -p ./target/generated-docs
+    - cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      # travis encrypt GITHUB_TOKEN=<your github repo token> --add
+      github-token: "$GITHUB_TOKEN"
+      keep-history: true
+      on:
+        branch: master
+        condition: "$TRAVIS_PULL_REQUEST = false"
+      local-dir: target/generated-docs
+      target_branch: gh-pages
+
 before_cache:
 - for item in $(find ~/.gradle -name "*.lock");
-    do sudo rm -rf $item ;
+  do sudo rm -rf $item ;
   done
+
 cache:
   packages: true
   pip: true
